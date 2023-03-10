@@ -4,16 +4,29 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Navber from "./components/Navber";
 import Footer from "./components/Footer";
+import { useAuthContext } from "./hooks/useAuthContext";
 
 const App = () => {
+  const { user } = useAuthContext();
+
+  console.log(user);
   return (
     <div className="app container mx-auto ">
       <div className="upperlevel-contents min-h-screen">
         <Navber />
         <Routes>
-          <Route path="/" element={<Chat />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route
+            path="/"
+            element={!user ? <Navigate to="/login" /> : <Chat />}
+          />
+          <Route
+            path="/login"
+            element={user ? <Navigate to="/" /> : <Login />}
+          />
+          <Route
+            path="/register"
+            element={user ? <Navigate to="/" /> : <Register />}
+          />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>
